@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Create Account</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+   body {
+  font-family: 'Inter', sans-serif;
+  background-color: #13111c;
+  color: #fff;
+  height: 100vh;
+  display: flex;
+  align-items: center;         /* ⬅️ Vertically center */
+  justify-content: center;     /* ⬅️ Horizontally center */
+  padding: 1rem;
+}
+
+
+    .container {
+  display: flex;
+  width: 100%;
+  max-width: 1200px;
+  box-shadow: 0 0 40px rgba(0,0,0,0.3);
+  border-radius: 12px;
+  overflow: hidden;
+  min-height: 600px; /* ⬅️ Add this line */
+}
+
+
+    .left {
+      flex: 1;
+      background: url('https://i.pinimg.com/736x/3a/69/36/3a6936f95965d357f124a41b6ac63657.jpg') center/cover no-repeat;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 2rem;
+    }
+
+    .left .top-btn {
+      text-align: right;
+    }
+
+    .left .top-btn button {
+      padding: 0.5rem 1rem;
+      border: 1px solid #fff;
+      background: transparent;
+      color: #fff;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.85rem;
+    }
+
+    .left .bottom-text {
+      color: white;
+      font-weight: 600;
+      font-size: 1.2rem;
+      text-shadow: 0 0 10px rgba(0,0,0,0.5);
+    }
+
+    .right {
+      flex: 1;
+      background: #1a1824;
+      padding: 3rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .right h2 {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .right p {
+      font-size: 0.9rem;
+      margin-bottom: 1.5rem;
+      color: #aaa;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    input[type="email"],
+    input[type="password"] {
+      padding: 0.75rem;
+      border-radius: 8px;
+      border: 1px solid #2c2c35;
+      background: #2b2835;
+      color: white;
+      font-size: 0.95rem;
+    }
+
+    input::placeholder {
+      color: #aaa;
+    }
+
+    label {
+      font-size: 0.85rem;
+      display: flex;
+      align-items: center;
+    }
+
+    label input[type="checkbox"] {
+      margin-right: 0.5rem;
+      accent-color: #9f7aea;
+    }
+
+    .submit-btn {
+      background: linear-gradient(to right, #9f7aea, #6b46c1);
+      padding: 0.9rem;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      color: white;
+      cursor: pointer;
+    }
+
+    /* .or-divider {
+      text-align: center;
+      color: #777;
+      font-size: 0.8rem;
+      margin: 1.2rem 0;
+    } */
+
+    .social-buttons {
+      display: flex;
+      gap: 1rem;
+    }
+
+    .social-buttons button {
+      flex: 1;
+      padding: 0.7rem;
+      border: 1px solid #444;
+      background: transparent;
+      border-radius: 8px;
+      color: white;
+      cursor: pointer;
+      font-size: 0.9rem;
+    }
+
+    .login-link {
+      font-size: 0.8rem;
+      margin-top: 1rem;
+      text-align: center;
+      color: #aaa;
+    }
+
+    .login-link a {
+      color: #9f7aea;
+      text-decoration: none;
+    }
+
+    #signupMessage {
+      font-size: 0.9rem;
+      color: #9f9;
+      margin-top: 0.5rem;
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        flex-direction: column;
+        border-radius: 0;
+      }
+      .left {
+        height: 250px;
+        padding: 1.5rem;
+      }
+      .right {
+        padding: 2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="left">
+      <div class="top-btn">
+        <button onclick="location.href='index.html'">← Back to website</button>
+      </div>
+      <div class="bottom-text">Connecting Businesses,<br>Creating Opportunities</div>
+    </div>
+
+    <div class="right">
+      <h2>Create an account</h2>
+      <p>Already have an account? <a href="login.html" style="color:#9f7aea;">Log in</a></p>
+
+      <form id="signupForm">
+        <input type="email" id="email" placeholder="Email" required />
+        <input type="password" id="password" placeholder="Enter your password" required />
+        <label>
+          <input type="checkbox" required /> I agree to the <a href="#" style="color:#9f7aea;">Terms & Conditions</a>
+        </label>
+        <button type="submit" class="submit-btn">Create account</button>
+        <p id="signupMessage"></p>
+      </form>
+
+      <!-- <div class="or-divider">or register with</div>
+      <div class="social-buttons">
+        <button>G Google</button>
+        <button> Apple</button>
+      </div>
+    </div> -->
+  </div>
+
+  <script>
+    const form = document.getElementById("signupForm");
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+
+      try {
+        const res = await fetch("http://localhost:5000/api/auth/signup", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ email, password }),
+        });
+
+        const data = await res.json();
+
+        if (res.ok) {
+          document.getElementById("signupMessage").innerText = "✅ Signup successful!";
+          localStorage.setItem("token", data.token);
+          setTimeout(() => {
+            window.location.href = "dashboard.html";
+          }, 1500);
+        } else {
+          document.getElementById("signupMessage").innerText = "❌ " + data.message;
+        }
+      } catch (err) {
+        document.getElementById("signupMessage").innerText = "❌ Signup failed";
+        console.error("Signup error:", err);
+      }
+    });
+  </script>
+</body>
+</html>

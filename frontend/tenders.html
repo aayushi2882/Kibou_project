@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Tender Management</title>
+ <style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: "Segoe UI", sans-serif;
+    background: linear-gradient(135deg, #0f0f1f, #1a1a2f);
+    color: #e0e0e0;
+    display: flex;
+  }
+
+  .sidebar {
+    width: 220px;
+    height: 100vh;
+    background: rgba(18, 18, 28, 0.6);
+    backdrop-filter: blur(16px);
+    padding: 30px 20px;
+    position: fixed;
+    left: 0;
+    top: 0;
+    border-right: 1px solid rgba(255,255,255,0.08);
+    box-shadow: 2px 0 12px rgba(0, 0, 0, 0.3);
+  }
+
+  .sidebar h2 {
+    font-size: 22px;
+    color: #99ff66;
+    margin-bottom: 40px;
+  }
+
+  .nav-link {
+    display: block;
+    margin: 20px 0;
+    color: #bbb;
+    text-decoration: none;
+    font-size: 15px;
+    padding: 8px 10px;
+    border-radius: 8px;
+    transition: 0.3s;
+  }
+
+  .nav-link:hover {
+    background: rgba(255,255,255,0.1);
+    color: #fff;
+  }
+
+  .main {
+    margin-left: 240px;
+    padding: 40px;
+    width: 100%;
+  }
+
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+  }
+
+  .header h1 {
+    font-size: 26px;
+    color: #fff;
+  }
+
+  .header button {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    padding: 10px 18px;
+    border-radius: 10px;
+    color: #fff;
+    cursor: pointer;
+    font-size: 15px;
+    transition: background 0.3s ease;
+  }
+
+  .header button:hover {
+    background: rgba(255, 255, 255, 0.15);
+  }
+
+  .card {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(12px);
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+    margin-bottom: 25px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    transition: 0.3s;
+  }
+
+  .card:hover {
+    border-color: rgba(255, 255, 255, 0.15);
+  }
+
+  input, textarea {
+    width: 100%;
+    padding: 14px;
+    margin: 12px 0;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid #444;
+    border-radius: 12px;
+    color: #e0e0e0;
+    font-size: 15px;
+  }
+
+  input::placeholder, textarea::placeholder {
+    color: #aaa;
+  }
+
+  button[type="submit"] {
+    padding: 12px 20px;
+    background: linear-gradient(to right, #7f5af0, #5d2ee1);
+    border: none;
+    border-radius: 12px;
+    color: white;
+    cursor: pointer;
+    margin-top: 20px;
+    font-size: 15px;
+    transition: 0.3s ease;
+  }
+
+  button[type="submit"]:hover {
+    opacity: 0.85;
+  }
+
+  .tender-card {
+    border-top: 1px solid rgba(255,255,255,0.1);
+    padding-top: 15px;
+    margin-top: 15px;
+    padding-bottom: 20px;
+  }
+
+  .tender-card button {
+    margin-top: 8px;
+    margin-right: 8px;
+    padding: 8px 14px;
+    font-size: 14px;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 10px;
+    cursor: pointer;
+    color: white;
+    transition: 0.2s ease;
+  }
+
+  .tender-card button:hover {
+    background: rgba(255,255,255,0.15);
+  }
+
+  .error {
+    color: #ff6b6b;
+    margin-top: 10px;
+    font-weight: 500;
+  }
+
+  h3 {
+    margin-top: 0;
+    font-size: 18px;
+    color: #fff;
+  }
+
+  h2 {
+    font-size: 22px;
+    margin-bottom: 10px;
+    color: #fff;
+  }
+
+  h4 {
+    margin: 10px 0;
+    font-size: 16px;
+    color: #ddd;
+  }
+</style>
+
+</head>
+<body>
+
+  <div class="sidebar">
+    <h2>Bidsphere</h2>
+    <a href="dashboard.html" class="nav-link"> Dashboard</a>
+    <a href="tenders.html" class="nav-link"> Tenders</a>
+    <a href="explore.html" class="nav-link"> Explore Tenders</a>
+  </div>
+
+  <div class="main">
+    <div class="header">
+      <h1>📑 Tender Management</h1>
+      <button onclick="logout()">🚪 Logout</button>
+    </div>
+
+    <div class="card">
+      <h2>📝 Create New Tender</h2>
+      <form id="tenderForm">
+        <input type="text" id="title" placeholder="Tender Title" required />
+        <textarea id="description" placeholder="Tender Description" rows="4" required></textarea>
+        <input type="number" id="budget" placeholder="Budget in INR" required />
+        <input type="date" id="deadline" required />
+        <button type="submit">Create Tender</button>
+        <p id="formMsg" class="error"></p>
+      </form>
+    </div>
+
+    <div class="card">
+      <h2>📋 My Posted Tenders</h2>
+      <div id="tenderList">
+        <p>Loading tenders...</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+  const token = localStorage.getItem("token");
+  if (!token) window.location.href = "login.html";
+
+  const tenderForm = document.getElementById("tenderForm");
+  const formMsg = document.getElementById("formMsg");
+  const tenderList = document.getElementById("tenderList");
+
+  tenderForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    formMsg.innerText = "";
+
+    const title = document.getElementById("title").value;
+    const description = document.getElementById("description").value;
+    const budget = document.getElementById("budget").value;
+    const deadline = document.getElementById("deadline").value;
+
+    try {
+      const res = await fetch("http://localhost:5000/api/tenders", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+        body: JSON.stringify({ title, description, budget, deadline }),
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        formMsg.style.color = "lightgreen";
+        formMsg.innerText = "✅ Tender created!";
+        tenderForm.reset();
+        fetchTenders();
+      } else {
+        formMsg.innerText = "❌ " + data.message;
+      }
+
+    } catch (err) {
+      console.error("Tender creation failed:", err);
+      formMsg.innerText = "❌ Server error";
+    }
+  });
+
+  async function fetchTenders() {
+    try {
+      const res = await fetch("http://localhost:5000/api/tenders", {
+        headers: { Authorization: "Bearer " + token },
+      });
+      const tenders = await res.json();
+
+      if (res.ok && tenders.length > 0) {
+        tenderList.innerHTML = "";
+        tenders.forEach(t => {
+          const card = document.createElement("div");
+          card.classList.add("tender-card");
+          card.innerHTML = `
+            <h3>${t.title}</h3>
+            <p>${t.description}</p>
+            <p><strong>💰 Budget:</strong> ₹${t.budget}</p>
+            <p><strong>📅 Deadline:</strong> ${t.deadline.split("T")[0]}</p>
+            <p><small>Posted on: ${new Date(t.created_at).toLocaleDateString()}</small></p>
+            <button onclick="editTender(${t.id}, '${t.title}', \`${t.description}\`, ${t.budget}, '${t.deadline}')">✏️ Edit</button>
+            <button onclick="deleteTender(${t.id})">🗑️ Delete</button>
+            <button onclick="viewProposals(${t.id})">📨 View Proposals</button>
+            <div id="proposal-${t.id}" style="margin-top:10px;"></div>
+          `;
+          tenderList.appendChild(card);
+        });
+      } else {
+        tenderList.innerHTML = "<p>No tenders found.</p>";
+      }
+
+    } catch (err) {
+      console.error("Fetch tenders failed:", err);
+      tenderList.innerHTML = "<p class='error'>❌ Failed to load tenders</p>";
+    }
+  }
+
+  async function viewProposals(tenderId) {
+    const container = document.getElementById(`proposal-${tenderId}`);
+    container.innerHTML = "Loading proposals...";
+
+    try {
+      const res = await fetch(`http://localhost:5000/api/tenders/${tenderId}/proposals`, {
+        headers: { Authorization: "Bearer " + token },
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        if (data.length === 0) {
+          container.innerHTML = "<p>No proposals received yet.</p>";
+        } else {
+          container.innerHTML = `<h4>📬 Proposals:</h4>`;
+          data.forEach(p => {
+          container.innerHTML += `
+  <div style="background:#3a3a3a;padding:10px;margin-bottom:10px;border-radius:8px;">
+    <p><strong>📧 ${p.applicant_email}</strong></p>
+    <p>${p.proposal_text}</p>
+    <p><small>Submitted on: ${new Date(p.created_at).toLocaleDateString()}</small></p>
+    <p>Status: <strong>${p.status || 'pending'}</strong></p>
+    ${p.status === "pending" ? `
+      <button onclick="updateProposalStatus(${p.id}, 'accepted')">✅ Accept</button>
+      <button onclick="updateProposalStatus(${p.id}, 'rejected')">❌ Reject</button>
+    ` : ""}
+  </div>
+`;
+
+          });
+        }
+      } else {
+        container.innerHTML = `<p class='error'>❌ ${data.message}</p>`;
+      }
+    } catch (err) {
+      console.error("Error loading proposals:", err);
+      container.innerHTML = "<p class='error'>❌ Failed to load proposals</p>";
+    }
+  }
+
+  async function deleteTender(id) {
+    if (!confirm("Are you sure you want to delete this tender?")) return;
+
+    try {
+      const res = await fetch(`http://localhost:5000/api/tenders/${id}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: "Bearer " + token,
+        },
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        fetchTenders();
+      } else {
+        alert("❌ " + data.message);
+      }
+    } catch (err) {
+      console.error("Delete error:", err);
+      alert("❌ Server error");
+    }
+  }
+
+  async function updateProposalStatus(proposalId, status) {
+  try {
+    const res = await fetch(`http://localhost:5000/api/tenders/proposals/${proposalId}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token,
+      },
+      body: JSON.stringify({ status }),
+    });
+
+    const data = await res.json();
+
+    if (res.ok) {
+      alert(`Proposal marked as ${status}`);
+      fetchTenders(); // reload updated tenders
+    } else {
+      alert("❌ " + data.message);
+    }
+  } catch (err) {
+    console.error("Status update failed:", err);
+    alert("❌ Server error");
+  }
+}
+
+
+  function logout() {
+    localStorage.removeItem("token");
+    window.location.href = "login.html";
+  }
+
+  fetchTenders();
+</script>
+</body>
+</html>
